@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-+-vl8-ii)!ofe1th0m^5vkjm*#+5s+i=blv0e(*az*l(k83xdi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', "voteapp-h7xz.onrender.com"]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', "blog-6uhb.onrender.com"]
 
 
 # Application definition
