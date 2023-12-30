@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Article</title>
+    <style>
+        /* Add some basic styling here, you can customize it further */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .article {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .cursive-font {
+            font-family: 'YourCursiveFont', cursive;
+        }
+    </style>
+</head>
+<body>
+    <h2 class="cursive-font">Create Article</h2>
+    <form method="post" class="article cursive-font">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

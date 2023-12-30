@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Article</title>
+    <style>
+        /* Add some basic styling here, you can customize it further */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .article {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .article-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #33BBC5;
+            margin-bottom: 10px;
+        }
+        .article-author {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .article-date {
+            font-style: italic;
+            color: #777;
+            margin-bottom: 20px;
+            
+            /*text-align: right; Align the text to the right */
+        }
+        .article-content {
+            line-height: 1.6;
+        }
+        .cursive-font {
+            font-family: 'YourCursiveFont', cursive;
+        }
+        /* Remove underlines from hyperlinks */
+        a {
+            text-decoration: none;
+        }
+        .button {
+            border: none;
+            color: white;
+            padding: 6px 13px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            font-family: 'YourCursiveFont', cursive;
+          }
+          
+        .button1 {background-color: #4CAF50;} /* Green */
+        .button2 {background-color: #008CBA;} /* Blue */
+        .button3 {background-color: #F11A7B;} /* Blue */ 
+        .button4 {background-color: #62CDFF;}
+
+        .button-container {
+            display: inline-block;
+            margin-right: 10px; /* Add some spacing between buttons */
+        }
+        .delete-form {
+            display: inline; /* Remove any default block-level behavior of the form */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .button-new-article {
+            /* Button styles for "New Article" button */
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 13px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .custom-link {
+            color: #7091F5; /* Change to your preferred color code */
+            text-decoration: none; /* Remove underline if desired */
+            /* Add other styles as needed */
+        }
+        .navbar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 95%;
+            background-color: #ffffff; /* Adjust background color as needed */
+            z-index: 1000; /* Ensure the bar appears above other content */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px; /* Adjust padding as needed */
+        }
+    
+        /* CSS for the left-aligned navigation links */
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+    
+        .navbar li {
+            display: inline-block;
+            margin-right: 20px; /* Adjust spacing between links as needed */
+        }
+        .content {
+            padding-top: 80px; /* Adjust the padding to match the navbar height */
+        }
+    </style>
+</head>
+<body>
+    <div class="article">
+        <div class="navbar-container">
+            <h2 class="cursive-font">
+                <a href="{% url 'articles_list' %}" style="color: #793FDF;">{{ article.title }} Article List</a>
+            </h2>
+            <ul class="navbar">
+                <li>{% if user.is_authenticated %}<a href="{% url 'create_article' %}" class="button button-new-article">Create Article</a></li>
+                <li><a href="{% url 'user_logout' %}" class="button button3">Log-Out</a></li>
+                <li><a href="{% url 'user_profile' %}" class="button button4">Profile</a>
+                {% else %}</li>
+                <li><a href="{% url 'user_register' %}" class="button button-new-article">Registration</a></li>
+                <li><a href="{% url 'user_login' %}" class="button button-new-article">Login</a>{% endif %}</li>
+            </ul>
+        </div>
+
+        <div class="header content"></div>    
+        <ul>
+            {% if articles %}
+                {% if articles.count > 1 %}
+                    {% for article in articles %}
+                        <li>
+                            <h3 class="article-title cursive-font">
+                                <a class="custom-link" href="{% url 'article_detail' article.id %}">{{ article.title }}</a>
+                            </h3>
+                            <p class="article-author cursive-font">Created by: {{ article.created_by.first_name }}</p>
+                            <p class="article-date cursive-font">Created at: {{ article.created_at }}</p>
+                            <p class="article-date cursive-font">Last updated: {{ article.last_updated }}</p>                    
+                            <div class="article-content cursive-font">
+                                <p>{{ article.body|slice:":100"}}..</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <h3 class="article-title cursive-font">
+                        {{ articles.title }}  
+                        {% if user.is_authenticated and user.id == articles.created_by.id %}
+
+                            <div class="button-container">
+                                <a href="{% url 'edit_article' articles.id %}" class="button button1">Edit</a>
+                                <form method="post" action="{% url 'delete_article' articles.id %}" class="delete-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="button button2">Delete</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </h3>
+                    
+                    <p class="article-author cursive-font">Created by: {{ articles.created_by }}</p>
+                    <p class="article-date cursive-font">Created at: {{ articles.created_at }}</p>
+                    <p class="article-date cursive-font">Last updated: {{ articles.last_updated }}</p>                    
+                    <div class="article-content cursive-font">
+                        <p>{{ articles.body }}</p>
+                    </div>        
+                    <!-- To edit article with ID 1 -->
+                {% endif %}
+            {% else %}
+                <li>No article available.</li>
+            {% endif %}
+        </ul>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logout Message</title>
+    <style>
+        /* Add some basic styling here, you can customize it further */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .article {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .cursive-font {
+            font-family: 'YourCursiveFont', cursive;
+        }
+    </style>
+</head>
+<body>
+    <p class="cursive-font">{{ logout_message }}</p>
+
+    <script type="text/javascript">
+        setTimeout(function () {
+            window.location.href = "{% url 'articles_list' %}";  // Replace with the URL of your login page
+        }, 3000);  // Redirect after 3 seconds (3000 milliseconds)
+    </script>
+</body>
+</html>
